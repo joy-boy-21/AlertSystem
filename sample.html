@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black;
+            color: #39ff14; /* Neon green */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5vw;
+            font-weight: bold;
+            color: #39ff14;
+            text-align: left;
+            transition: text-shadow 0.3s;
+        }
+
+        .header:hover {
+            text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #39ff14;
+            font-size: 16px;
+            cursor: pointer;
+            transition: text-shadow 0.3s;
+            padding: 0;
+            width: auto;
+            white-space: nowrap;
+        }
+
+        .logout-button:hover {
+            text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
+        }
+
+        #login, #admin, #user {
+            display: none;
+            background: #333;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            max-width: 400px;
+            width: 100%;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #39ff14;
+            text-align: center;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #39ff14;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #222;
+            color: #fff;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #fff;
+            outline: none;
+        }
+
+        button {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 6px;
+            background-color: #39ff14; /* Default for other buttons */
+            color: black; /* Text color for other buttons */
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        button:hover {
+            color: #fff; /* White text on hover */
+        }
+
+        #chatbox, #chatboxUser {
+            border: 1px solid #39ff14;
+            padding: 10px;
+            height: 250px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            background: #222;
+            border-radius: 6px;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .message {
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 6px;
+            line-height: 1.4;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .user-message {
+            background-color: #444;
+            color: #39ff14;
+            align-self: flex-start;
+        }
+
+        .admin-message {
+            background-color: #555;
+            color: #39ff14;
+            align-self: flex-end;
+        }
+
+        .timestamp {
+            font-size: 0.8em;
+            color: #ccc;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .read-status {
+            font-size: 0.8em;
+            color: #39ff14;
+            margin-left: 5px;
+        }
+
+        #chatbotIcon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #39ff14;
+            color: black;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s;
+            width: 50px;
+            height: 50px;
+        }
+
+        #chatbotIcon:hover {
+            background-color: #fff;
+            color: #39ff14;
+        }
+
+        /* User Panel Styles */
+        #user {
+            display: none; /* Hide user panel by default */
+            width: 100vw; /* Full width */
+            height: 100vh; /* Full height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space buttons evenly */
+            align-items: center;
+        }
+
+        .user-button {
+            width: 90%; /* Adjust to fill the width */
+            height: 30%; /* Each button occupies 30% of height */
+            margin: 10px 0; /* Margin between buttons */
+            background-color: black; /* Black background */
+            color: #39ff14; /* Neon green text */
+            font-size: 24px; /* Larger font size */
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            position: relative;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .user-button:hover {
+            color: #fff; /* Change text color on hover */
+            text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14; /* Glow effect */
+        }
+
+        /* Toggle switch styles */
+        .toggle-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #39ff14;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Light mode styles */
+        body.light-mode {
+            background-color: white;
+            color: black;
+        }
+
+        .light-mode .header,
+        .light-mode .logout-button,
+        .light-mode input,
+        .light-mode button {
+            color: black;
+            border-color: #333;
+        }
+
+        .light-mode #login,
+        .light-mode #admin,
+        .light-mode #user,
+        .light-mode #chatbox,
+        .light-mode #chatboxUser {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">Vigilance 360</div>
+    <button class="logout-button" id="logoutButton" onclick="logout()" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+
+    <div id="login">
+        <h1>Login</h1>
+        <div id="error-message" class="error-message" style="color: red;"></div>
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <div id="togglePassword">
+            <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()" />
+            <label for="showPassword" style="color: #fff;">Show Password</label>
+        </div>
+        <button onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button onclick="enterUserPanel()"><i class="fas fa-user-circle"></i> User Panel</button>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin">
+        <h1>Admin Panel</h1>
+        <div id="chatbox"></div>
+        <input type="text" id="adminMessage" placeholder="Type a message..." />
+        <button onclick="sendAdminMessage()"><i class="fas fa-paper-plane"></i> Send</button>
+    </div>
+
+    <!-- User Panel -->
+    <div id="user">
+        <h1>User Panel</h1>
+        <button class="user-button" onclick="openMedicalBot()">Medical Bot</button>
+        <button class="user-button" onclick="openPredictions()">Predictions</button>
+        <button class="user-button" onclick="openAlerts()">Alerts</button>
+
+        <div id="chatboxUser" style="display: none;">
+            <input type="text" id="userMessage" placeholder="Type a message..." />
+            <button onclick="sendUserMessage()" id="sendUserButton" style="display: none;"><i class="fas fa-paper-plane"></i> Send</button>
+        </div>
+    </div>
+
+    <!-- Chatbot Icon -->
+    <button id="chatbotIcon" onclick="toggleChatbox()"><i class="fas fa-comments"></i></button>
+
+    <!-- Theme Toggle -->
+    <div class="toggle-container">
+        <label class="switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme()" />
+            <span class="slider round"></span>
+        </label>
+        <span id="themeLabel" style="color: #39ff14;">Dark Mode</span>
+    </div>
+
+    <script>
+        let messages = [];
+        let messageId = 0;
+
+        // Show login page on load
+        document.getElementById('login').style.display = 'block';
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-message');
+            errorMsg.textContent = '';
+
+            if (username === 'admin' && password === 'admin') {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('admin').style.display = 'block';
+                document.getElementById('logoutButton').style.display = 'block';
+                loadMessages('admin');
+            } else {
+                errorMsg.textContent = 'Invalid credentials. Please try again.';
+            }
+        }
+
+        function enterUserPanel() {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('user').style.display = 'flex'; // Use flex to fill the space
+            document.getElementById('logoutButton').style.display = 'block';
+            loadMessages('user');
+        }
+
+        function logout() {
+            document.getElementById('login').style.display = 'block';
+            document.getElementById('admin').style.display = 'none';
+            document.getElementById('user').style.display = 'none';
+            document.getElementById('logoutButton').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function sendUserMessage() {
+            const message = document.getElementById('userMessage').value;
+            if (message) {
+                const timestamp = new Date().toLocaleTimeString();
+                messages.push({ id: messageId++, text: message, timestamp, type: 'user', readByAdmin: false });
+                document.getElementById('userMessage').value = '';
+                loadMessages('user');
+                loadMessages('admin');
+            }
+        }
+
+        function sendAdminMessage() {
+            const message = document.getElementById('adminMessage').value;
+            if (message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const adminMessage = { id: messageId++, text: message, timestamp, type: 'admin', readByUser: false };
+                messages.push(adminMessage);
+                document.getElementById('adminMessage').value = '';
+                loadMessages('admin');
+            }
+        }
+
+        function loadMessages(panel) {
+            const chatboxUser = document.getElementById('chatboxUser');
+            const chatboxAdmin = document.getElementById('chatbox');
+
+            if (panel === 'user') {
+                chatboxUser.innerHTML = messages
+                    .filter(msg => msg.type === 'user')
+                    .map(msg => {
+                        const readStatus = msg.readByAdmin ? `<span class="read-status"><i class="fas fa-check-double"></i></span>` : '';
+                        return `<div class="message user-message">
+                                    ${msg.text}
+                                    <div class="timestamp">${msg.timestamp} ${readStatus}</div>
+                                 </div>`;
+                    }).join('');
+            } else if (panel === 'admin') {
+                chatboxAdmin.innerHTML = messages
+                    .filter(msg => msg.type === 'admin' || msg.type === 'user')
+                    .map(msg => {
+                        const readStatus = msg.type === 'user' && msg.readByAdmin ? `<span class="read-status"><i class="fas fa-check-double"></i></span>` : '';
+                        return `<div class="message ${msg.type}-message" onclick="markAsRead(${msg.id})">
+                                    ${msg.text}
+                                    <div class="timestamp">${msg.timestamp} ${readStatus}</div>
+                                 </div>`;
+                    }).join('');
+
+                messages.forEach(msg => {
+                    if (msg.type === 'user' && !msg.readByAdmin) {
+                        msg.readByAdmin = true;
+                    }
+                });
+            }
+        }
+
+        function markAsRead(id) {
+            const message = messages.find(msg => msg.id === id && msg.type === 'user');
+            if (message && !message.readByUser) {
+                message.readByUser = true;
+                loadMessages('admin');
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const showPasswordCheckbox = document.getElementById('showPassword');
+            passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+        }
+
+        function toggleChatbox() {
+            const chatboxUser = document.getElementById('chatboxUser');
+            chatboxUser.style.display = chatboxUser.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function openMedicalBot() {
+            // Functionality for Medical Bot
+            alert('Medical Bot opened!');
+        }
+
+        function openPredictions() {
+            // Functionality for Predictions
+            alert('Predictions opened!');
+        }
+
+        function openAlerts() {
+            // Functionality for Alerts
+            alert('Alerts opened!');
+        }
+
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            const themeLabel = document.getElementById('themeLabel');
+            body.classList.toggle('light-mode');
+            
+            // Update label text
+            if (body.classList.contains('light-mode')) {
+                themeLabel.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeLabel.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme based on saved preference (if any)
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('themeToggle').checked = true;
+                document.getElementById('themeLabel').textContent = 'Light Mode';
+            }
+        });
+
+        // Automatically load messages for the admin panel
+        setInterval(() => {
+            if (document.getElementById('admin').style.display === 'block') {
+                loadMessages('admin');
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header" id="header">Vigilance 360</div>
+    
+    <!-- Login Panel -->
+    <div id="login" style="display: block;">
+        <h1>Login</h1>
+        <div id="error-message" class="error-message" style="color: red;"></div>
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <div id="togglePassword">
+            <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()" />
+            <label for="showPassword" style="color: #fff;">Show Password</label>
+        </div>
+        <button onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button onclick="enterUserPanel()"><i class="fas fa-user-circle"></i> User Panel</button>
+    </div>
+
+    <!-- Admin Panel -->
+<div id="admin" style="display: none;">
+    <h1>Admin Panel</h1>
+    
+    <div class="admin-buttons">
+        <button class="admin-button">
+            <i class="fas fa-chart-line"></i> Analysis
+        </button>
+        <button class="admin-button">
+            <i class="fas fa-database"></i> DataBase
+        </button>
+        <button class="admin-button">
+            Predictions
+        </button>
+        <button class="admin-button">
+            <i class="fas fa-exclamation-triangle"></i> Alerts
+        </button>
+    </div>
+
+    <div id="chatbox" style="border: 1px solid #39ff14; padding: 10px; height: 300px; width: 80%; overflow-y: scroll; margin-bottom: 10px;"></div>
+    <input type="text" id="adminMessage" placeholder="Type a message..." />
+    <button onclick="sendAdminMessage()"><i class="fas fa-paper-plane"></i> Send</button>
+</div>
+
+
+    <!-- User Panel -->
+    <div id="user" style="display: none;">
+        <button class="logout-button" id="logoutButton" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+        <h1>User Panel</h1>
+        <button class="user-button" onclick="openMedicalBot()">Medical Bot</button>
+        <button class="user-button" onclick="openPredictions()">Predictions</button>
+        <button class="user-button" onclick="openAlerts()">Alerts</button>
+
+        <div id="chatboxUser" style="display: none; margin-top: 10px;">
+            <input type="text" id="userMessage" placeholder="Type a message..." />
+            <button onclick="sendUserMessage()" id="sendUserButton" style="display: none;">
+                <i class="fas fa-paper-plane"></i> Send
+            </button>
+        </div>
+    </div>
+
+    <!-- Chatbot Icon -->
+    <button id="chatbotIcon" onclick="toggleChatbox()" style="position: fixed; bottom: 30px; right: 30px; display: none;">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Theme Toggle -->
+    <div class="toggle-container" style="position: fixed; bottom: 30px; left: 30px;">
+        <label class="switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme()" />
+            <span class="slider round"></span>
+        </label>
+        <span id="themeLabel" style="color: #39ff14;">Dark Mode</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

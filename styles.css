@@ -1,0 +1,245 @@
+/* Overall body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #181818; /* Default dark background */
+    color: #B4FF3D; /* Neon green for text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* Header styling */
+.header {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #B4FF3D; /* Neon green for the header */
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Initial glow effect */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transition: text-shadow 0.3s ease;
+}
+
+/* Glow effect on hover */
+.header:hover {
+    text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.5);
+}
+
+/* Centered title styling */
+h1 {
+    text-align: center; /* Center text */
+    width: 100%; /* Full width to allow centering */
+}
+
+/* Logout button styling */
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #FF4C4C; /* Red for logout button */
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+    background-color: #FF1C1C; /* Darker red on hover */
+    transform: scale(1.05);
+}
+
+/* Button styling */
+button {
+    background-color: #00FF7F;
+    color: #181818;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #B4FF3D;
+}
+
+/* Admin button styling */
+.admin-button {
+    background-color: #00FF7F;
+    color: #181818;
+    border: none;
+    padding: 12px 15px;
+    margin: 5px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.admin-buttons {
+    display: flex;
+    flex-wrap: wrap; /* Allows buttons to wrap to the next line */
+    justify-content: center; /* Centers buttons in the container */
+    margin-bottom: 20px; /* Adds space below buttons */
+}
+
+.admin-button {
+    margin: 10px; /* Space between buttons */
+    width: 200px; /* Fixed width for uniformity */
+}
+
+
+.admin-button:hover {
+    background-color: #B4FF3D;
+}
+
+/* Input fields styling */
+input[type="text"],
+input[type="password"] {
+    padding: 15px;
+    width: 300px;
+    margin: 10px 0;
+    border: 2px solid #B4FF3D;
+    background-color: transparent;
+    color: #B4FF3D;
+    border-radius: 25px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #00FF7F;
+    box-shadow: 0 0 20px rgba(0, 255, 127, 0.5);
+}
+
+/* Message boxes */
+.user-message, .admin-message {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    margin: 8px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    max-width: 70%;
+    color: white;
+}
+
+/* Timestamp styling */
+.timestamp {
+    font-size: 0.9em;
+    color: #B4FF3D;
+    margin-left: 5px;
+}
+
+/* Read status */
+.read-status {
+    color: #00FF7F;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/* Toggle switch styles */
+.toggle-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Switch styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Light mode styles */
+.light-mode {
+    background-color: #f4f4f4; /* Light background */
+    color: #181818; /* Dark text */
+}
+
+.light-mode input[type="text"],
+.light-mode input[type="password"] {
+    border: 2px solid #181818; /* Dark border in light mode */
+}
+
+.light-mode .header {
+    color: #181818; /* Dark text for header */
+}
+
+/* Chatbox styling */
+#chatbox, #chatboxUser {
+    border: 1px solid #39ff14;
+    padding: 10px;
+    height: 300px;
+    width: 80%;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    .header {
+        font-size: 1.5em;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+    }
+}
